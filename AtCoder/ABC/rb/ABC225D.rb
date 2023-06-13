@@ -6,7 +6,6 @@ back = Array.new(n+1, -1)
 q.times do |i|
   query, x, y = gets.split().map(&:to_i)
   if query == 1
-    #
     back[x] = y
     front[y] = x
   elsif query == 2
