@@ -1,14 +1,12 @@
 n = gets.to_i
-arr = n.times.map{ gets.chomp.chars }
+arr = gets.split.map(&:to_i)
 
-ans = "correct"
-[*0..n-1].permutation(2).to_a.each do |i, j|
-  next if i > j
-
-  unless (arr[i][j] == "W" && arr[j][i] == "L") || (arr[i][j] == "L" && arr[j][i] == "W") || (arr[i][j] == "D" && arr[j][i] == "D")
-    ans = "incorrect"
-    break
+q = gets.to_i
+q.times do
+  i, k, x = gets.split.map(&:to_i)
+  if i == 1
+    arr[k-1] = x
+  else
+    puts arr[k-1]
   end
 end
-
-puts ans
