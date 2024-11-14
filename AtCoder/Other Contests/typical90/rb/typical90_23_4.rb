@@ -1,7 +1,39 @@
-# TLE：2024/11/13
-
 # 小課題4：bitDP（不要な状態を削除）
+## dpテーブルをHashで管理することで、不要な状態を持たないようにする
 
+h, w = gets.split.map(&:to_i)
+field = h.times.map { gets.chomp.chars }
+MOD = 10 ** 9 + 7
+
+dp = Hash.new(0)  # ハッシュで管理することで、不要な状態を持たないようにする
+dp_new = dp.dup  # .dupを避けるため、更新用のdpを用意
+dp[0] = 1
+
+h.times do |i|
+	w.times do |j|
+    # マスの色を判定
+		is_white = field[i][j] == '.' ? true : false
+
+    # 駒を置けるかどうかの判定（左以外）
+		bit = 1 << (w - 1)  # 上に駒がある
+		bit |= 1 << (w - 2) if j > 0  # 左上に駒がある
+		bit |= 1 | 1 << w if j + 1 != w   # 右上に駒がある
+
+    # dpの更新
+    dp.each do |k, v|
+			v %= MOD
+			dp_new[k >> 1] += v  # 駒を置かない
+			dp_new[k >> 1 | bit] += v if is_white && k & 1 == 0   # 駒を置く（現在マスが白＆左に駒がない場合）
+    end
+		dp, dp_new = dp_new, dp
+		dp_new.clear
+	end
+end
+
+puts dp.values.sum % MOD
+
+
+# TLE：2024/11/13
 h, w = gets.split.map(&:to_i)
 field = h.times.map { gets.chomp.chars }
 MOD = 10**9 + 7
